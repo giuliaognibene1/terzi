@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEROMECH - Preventivi e Fatture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="assets/css/stile.css">
+</head>
+<body class="bg-gray-50 font-sans text-gray-900 flex min-h-screen relative">
+
+    <aside class="w-64 bg-sidebar text-gray-300 flex flex-col justify-between p-4 flex-shrink-0 z-20 shadow-lg">
+        <div>
+            <div class="flex items-center space-x-3 pb-6 mb-6 border-b border-emerald-900">
+                <div class="bg-orange-500 text-white p-2 rounded"><i data-lucide="tractor" class="w-6 h-6"></i></div>
+                <div>
+                    <h1 class="font-bold text-white tracking-wide text-lg leading-none">AEROMECH</h1>
+                    <span class="text-xs text-emerald-400 font-medium tracking-wider uppercase">Cantiere Contoterzi</span>
+                </div>
+            </div>
+            <nav class="space-y-1">
+                <a href="index.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span>Dashboard</span></a>
+                <a href="anagrafiche.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="folder-open" class="w-5 h-5"></i><span>Anagrafica</span></a>
+                <a href="commesse.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="clipboard-list" class="w-5 h-5"></i><span>Commesse</span></a>
+                <a href="pianificazione.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="calendar-days" class="w-5 h-5"></i><span>Pianificazione</span></a>
+                <a href="fatturazione.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="receipt" class="w-5 h-5"></i><span>Preventivi e Fatture</span></a>
+                <a href="storico.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="archive" class="w-5 h-5"></i><span>Storico Lavori</span></a>
+                <a href="scadenze.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="alert-triangle" class="w-5 h-5"></i><span>Scadenze</span></a>
+                <a href="azienda.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="building-2" class="w-5 h-5"></i><span>Sede Azienda</span></a>
+            </nav>
+        </div>
+        <div class="pt-4 border-t border-emerald-900">
+            <button id="btn-logout" class="flex items-center space-x-2 text-sm text-gray-400 hover:text-white transition w-full text-left cursor-pointer"><i data-lucide="log-out" class="w-4 h-4"></i><span>Esci</span></button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto relative">
+        <div class="p-6 bg-white border-b border-gray-200 shadow-sm flex justify-between items-center z-10 flex-shrink-0">
+            <div>
+                <h2 class="text-2xl font-black text-gray-900">Amministrazione</h2>
+                <p class="text-sm text-gray-500 mt-1">Gestione commerciale dell'azienda contoterzi, dall'offerta iniziale alla fattura.</p>
+            </div>
+            <button id="btn-nuovo-preventivo" class="bg-emerald-800 hover:bg-emerald-950 text-white font-bold py-2.5 px-4 rounded-lg text-sm shadow transition flex items-center space-x-2 cursor-pointer">
+                <i data-lucide="file-plus" class="w-4 h-4"></i><span>Nuovo Preventivo</span>
+            </button>
+        </div>
+
+        <div class="bg-white border-b border-gray-200 px-6 flex-shrink-0 z-10">
+            <div class="flex space-x-6">
+                <button id="tab-preventivi" class="py-4 font-bold text-sm border-b-2 border-emerald-800 text-emerald-800 focus:outline-none cursor-pointer flex items-center">
+                    <i data-lucide="calculator" class="w-4 h-4 mr-2"></i>Preventivi Salvati
+                </button>
+                <button id="tab-fatture" class="py-4 font-bold text-sm border-b-2 border-transparent text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer flex items-center">
+                    <i data-lucide="receipt" class="w-4 h-4 mr-2"></i>Registro Fatture Emesse
+                </button>
+            </div>
+        </div>
+
+        <div class="p-6 space-y-6">
+
+            <div id="sezione-preventivi" class="space-y-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="bg-gray-50 p-4 border-b border-gray-200 flex justify-between items-center">
+                        <h3 class="font-bold text-gray-800 flex items-center"><i data-lucide="file-text" class="w-5 h-5 mr-2 text-gray-600"></i>Archivio Offerte e Preventivi</h3>
+                        <span id="badge-preventivi" class="bg-gray-200 text-gray-700 text-xs font-bold px-2 py-1 rounded">0</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-white border-b border-gray-100 text-gray-500 uppercase text-xs">
+                                <tr>
+                                    <th class="p-4 font-bold">Codice</th>
+                                    <th class="p-4 font-bold">Cliente</th>
+                                    <th class="p-4 font-bold">Lavorazione / Superficie</th>
+                                    <th class="p-4 font-bold">Tariffa Scelta</th>
+                                    <th class="p-4 font-bold">Importo Stimato</th>
+                                    <th class="p-4 font-bold">Stato</th>
+                                    <th class="p-4 text-center font-bold">Azioni</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-preventivi" class="divide-y divide-gray-100">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sezione-fatture" class="space-y-6" style="display: none;">
+                <div class="bg-white rounded-xl shadow-sm border border-emerald-200 overflow-hidden">
+                    <div class="bg-emerald-50 p-4 border-b border-emerald-200 flex items-center justify-between">
+                        <h3 class="font-bold text-emerald-900 flex items-center"><i data-lucide="file-check" class="w-5 h-5 mr-2 text-emerald-700"></i>Cantieri Ultimati da Fatturare</h3>
+                        <span id="badge-pronte-fattura" class="bg-emerald-700 text-white text-xs font-bold px-2.5 py-1 rounded-full">0</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-white border-b border-gray-100 text-gray-500 uppercase text-xs">
+                                <tr>
+                                    <th class="p-4 font-bold">Commessa</th>
+                                    <th class="p-4 font-bold">Cliente</th>
+                                    <th class="p-4 font-bold">Lavorazione</th>
+                                    <th class="p-4 font-bold">Base Preventivo</th>
+                                    <th class="p-4 font-bold">Conguaglio Ore Extra</th>
+                                    <th class="p-4 font-bold">Totale Fatturabile</th>
+                                    <th class="p-4 text-center font-bold">Azione</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-pronte-fattura" class="divide-y divide-gray-100">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="bg-gray-50 p-4 border-b border-gray-200 flex items-center justify-between">
+                        <h3 class="font-bold text-gray-800 flex items-center"><i data-lucide="receipt" class="w-5 h-5 mr-2 text-gray-600"></i>Fatture Commerciali Inviate</h3>
+                        <span id="badge-fatture-emesse" class="bg-gray-200 text-gray-700 text-xs font-bold px-2 py-1 rounded">0</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-white border-b border-gray-100 text-gray-500 uppercase text-xs">
+                                <tr>
+                                    <th class="p-4 font-bold">N° Fattura</th>
+                                    <th class="p-4 font-bold">Data</th>
+                                    <th class="p-4 font-bold">Cliente</th>
+                                    <th class="p-4 font-bold">Importo Totale</th>
+                                    <th class="p-4 font-bold">Stato Pagamento</th>
+                                    <th class="p-4 text-center font-bold">Azioni</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-fatture-emesse" class="divide-y divide-gray-100">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="modale-preventivo" style="display: none;" class="fixed inset-0 bg-gray-900 bg-opacity-70 items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden relative">
+            <div class="bg-emerald-800 p-5 text-white flex justify-between items-center">
+                <h3 class="text-lg font-black flex items-center"><i data-lucide="calculator" class="w-5 h-5 mr-2"></i>Gestione Preventivo</h3>
+                <button type="button" class="btn-chiudi-preventivo text-emerald-200 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="form-preventivo" class="p-6 space-y-4">
+                <input type="hidden" id="prev-id-edita" value="">
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Cliente</label>
+                    <select id="prev-cliente" required class="w-full px-3 py-2 border rounded bg-white text-sm outline-none focus:border-emerald-600"></select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Lavorazione</label>
+                        <select id="prev-tipo" required class="w-full px-3 py-2 border rounded bg-white text-sm outline-none focus:border-emerald-600">
+                            <option value="Aratura / Ripuntatura">Aratura / Ripuntatura</option>
+                            <option value="Erpicatura / Preparazione">Erpicatura / Preparazione</option>
+                            <option value="Semina precisione">Semina precisione</option>
+                            <option value="Trattamento Fitosanitario">Trattamento Fitosanitario</option>
+                            <option value="Diserbo / Concimazione">Diserbo / Concimazione</option>
+                            <option value="Mietitura / Raccolta">Mietitura / Raccolta</option>
+                            <option value="Trinciatura Stocchi">Trinciatura Stocchi</option>
+                            <option value="Pressatura Rotoballe">Pressatura Rotoballe</option>
+                            <option value="Scavo / Movimento Terra">Scavo / Movimento Terra</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Superficie (Ettari)</label>
+                        <input type="number" step="0.1" id="prev-ettari" required placeholder="Es. 10" class="w-full px-3 py-2 border rounded bg-white text-sm outline-none focus:border-emerald-600">
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Posizione Campo (Coordinate GPS Lat,Lon)</label>
+                    <div class="relative">
+                        <input type="text" id="prev-gps" placeholder="Es. 44.6983,10.6306" class="w-full px-3 py-2 border rounded bg-white text-sm outline-none focus:border-emerald-600 font-mono">
+                        <span class="absolute right-3 top-2 text-gray-400" title="Inserisci latitudine e longitudine separate da virgola"><i data-lucide="map-pin" class="w-4 h-4"></i></span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Tipo Tariffa</label>
+                        <select id="prev-modalita" class="w-full px-3 py-2 border rounded bg-white text-sm outline-none focus:border-emerald-600">
+                            <option value="ettaro">A Ettaro (+ Extra)</option>
+                            <option value="ora">A Ora Pura</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Tariffa (€)</label>
+                        <input type="number" step="1" id="prev-tariffa" required placeholder="Es. 95" class="w-full px-3 py-2 border rounded bg-white text-sm outline-none focus:border-emerald-600">
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 text-white rounded-lg p-4 mt-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs uppercase text-gray-400 font-bold">Totale Stimato:</span>
+                        <span id="prev-totale-stimato" class="text-xl font-black text-emerald-400">€ 0.00</span>
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t flex justify-end">
+                    <button type="submit" class="bg-emerald-800 hover:bg-emerald-950 text-white font-bold py-2.5 px-6 rounded-lg text-sm shadow transition cursor-pointer">
+                        Salva Preventivo
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modale-fattura" style="display: none;" class="fixed inset-0 bg-gray-900 bg-opacity-70 items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden relative">
+            <div class="bg-emerald-800 p-5 text-white flex justify-between items-center">
+                <h3 class="text-lg font-black flex items-center"><i data-lucide="file-text" class="w-5 h-5 mr-2"></i>Emissione Fattura</h3>
+                <button type="button" class="btn-chiudi-fattura text-emerald-200 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="form-emetti-fattura" class="p-6 space-y-4">
+                <input type="hidden" id="fat-idcommessa">
+
+                <div class="bg-gray-50 border border-gray-200 rounded p-4 text-sm space-y-2">
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-xs text-gray-500 font-bold uppercase">Cliente:</span>
+                        <span id="fat-cliente" class="font-bold text-gray-900">--</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-xs text-gray-500 font-bold uppercase">Lavorazione:</span>
+                        <span id="fat-lavorazione" class="font-bold text-gray-800">--</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-xs text-gray-500 font-bold uppercase">Base Preventivo:</span>
+                        <span id="fat-base" class="font-mono font-bold text-gray-800">€ 0.00</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-xs text-gray-500 font-bold uppercase">Conguaglio Ore Extra:</span>
+                        <span id="fat-conguaglio" class="font-mono font-bold text-orange-600">+ € 0.00</span>
+                    </div>
+                    <div class="flex justify-between pt-1">
+                        <span class="text-sm font-black text-gray-900 uppercase">Totale Fattura:</span>
+                        <span id="fat-totale" class="text-lg font-black text-emerald-700">€ 0.00</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Numero Fattura</label>
+                        <input type="text" id="fat-numero" required class="w-full px-3 py-2 border rounded bg-white text-sm outline-none focus:border-emerald-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Data Emissione</label>
+                        <input type="date" id="fat-data" required class="w-full px-3 py-2 border rounded bg-white text-sm outline-none focus:border-emerald-600">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Stato Pagamento</label>
+                    <select id="fat-stato" class="w-full px-3 py-2 border rounded bg-white text-sm outline-none focus:border-emerald-600">
+                        <option value="In Attesa">In Attesa di Incasso</option>
+                        <option value="Pagata">Pagata</option>
+                    </select>
+                </div>
+
+                <div class="pt-4 border-t flex justify-end">
+                    <button type="submit" class="bg-emerald-800 hover:bg-emerald-950 text-white font-bold py-2.5 px-6 rounded-lg text-sm shadow transition cursor-pointer">
+                        Conferma ed Emetti
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/fatturazione.js"></script>
+</body>
+</html>

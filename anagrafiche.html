@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEROMECH - Anagrafiche</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="assets/css/stile.css">
+</head>
+<body class="bg-gray-50 font-sans text-gray-900 flex min-h-screen relative">
+
+    <aside class="w-64 bg-sidebar text-gray-300 flex flex-col justify-between p-4 flex-shrink-0">
+        <div>
+            <div class="flex items-center space-x-3 pb-6 mb-6 border-b border-emerald-900">
+                <div class="bg-orange-500 text-white p-2 rounded">
+                    <i data-lucide="tractor" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-white tracking-wide text-lg leading-none">AEROMECH</h1>
+                    <span class="text-xs text-emerald-400 font-medium tracking-wider uppercase">Cantiere Contoterzi</span>
+                </div>
+            </div>
+            <nav class="space-y-1">
+                <a href="index.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span>Dashboard</span></a>
+                <a href="anagrafiche.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="folder-open" class="w-5 h-5"></i><span>Anagrafica</span></a>
+                <a href="commesse.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="clipboard-list" class="w-5 h-5"></i><span>Commesse</span></a>
+                <a href="pianificazione.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="calendar-days" class="w-5 h-5"></i><span>Pianificazione</span></a>
+                <a href="fatturazione.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="receipt" class="w-5 h-5"></i><span>Preventivi e Fatture</span></a>
+                <a href="storico.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="archive" class="w-5 h-5"></i><span>Storico Lavori</span></a>
+                <a href="scadenze.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="alert-triangle" class="w-5 h-5"></i><span>Scadenze</span></a>
+                <a href="azienda.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="building-2" class="w-5 h-5"></i><span>Sede Azienda</span></a>
+            </nav>
+        </div>
+        <div class="pt-4 border-t border-emerald-900">
+            <div class="mb-4">
+                <p class="text-xs text-emerald-400 uppercase tracking-wider font-semibold">Profilo Attivo</p>
+                <p id="etichetta-titolare" class="text-sm font-bold text-white">CARICAMENTO...</p>
+            </div>
+            <button id="btn-logout" class="flex items-center space-x-2 text-sm text-gray-400 hover:text-white transition w-full text-left cursor-pointer">
+                <i data-lucide="log-out" class="w-4 h-4"></i>
+                <span>Esci</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-y-auto relative">
+        <div class="mb-6">
+            <h2 class="text-2xl font-black text-gray-900">Gestione Archivi Aziendali</h2>
+        </div>
+
+        <div class="flex space-x-2 border-b border-gray-200 pb-4 mb-6">
+            <button id="tab-clienti" class="px-5 py-2 rounded-lg font-bold text-sm bg-emerald-800 text-white shadow transition cursor-pointer">Clienti</button>
+            <button id="tab-mezzi" class="px-5 py-2 rounded-lg font-bold text-sm bg-white text-gray-600 hover:bg-gray-100 transition border border-gray-200 cursor-pointer">Mezzi</button>
+            <button id="tab-operatori" class="px-5 py-2 rounded-lg font-bold text-sm bg-white text-gray-600 hover:bg-gray-100 transition border border-gray-200 cursor-pointer">Operatori</button>
+        </div>
+
+        <div id="sub-clienti" style="display: block;">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                <div class="flex flex-wrap items-center gap-4 flex-1">
+                    <h3 class="text-lg font-black text-gray-800 whitespace-nowrap">Registro Clienti e Colture</h3>
+                    <input type="text" id="cerca-clienti" placeholder="Cerca cliente o coltura..." class="px-3 py-1.5 text-xs border rounded-lg outline-none focus:border-orange-500 w-64 bg-gray-50">
+                </div>
+                <button id="btn-nuovo-cliente" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg text-xs shadow transition flex items-center space-x-1.5 cursor-pointer">
+                    <i data-lucide="plus" class="w-4 h-4"></i><span>Nuovo Cliente</span>
+                </button>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th class="p-4 w-12 text-xs font-bold uppercase text-gray-500 text-center">Mod.</th>
+                            <th class="p-4 text-xs font-bold uppercase text-gray-500">ID</th>
+                            <th class="p-4 text-xs font-bold uppercase text-gray-500">Ragione Sociale</th>
+                            <th class="p-4 text-xs font-bold uppercase text-gray-500">Coltura</th>
+                            <th class="p-4 text-xs font-bold uppercase text-gray-500">Coordinate</th>
+                            <th class="p-4 w-12 text-xs font-bold uppercase text-gray-500 text-center">Elim.</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-clienti" class="divide-y divide-gray-100 text-sm"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="sub-mezzi" style="display: none;">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                <div class="flex flex-wrap items-center gap-4 flex-1">
+                    <h3 class="text-lg font-black text-gray-800 whitespace-nowrap">Archivio Hardware (Macchine e Attrezzature)</h3>
+                    <input type="text" id="cerca-mezzi" placeholder="Cerca mezzo, modello o targa..." class="px-3 py-1.5 text-xs border rounded-lg outline-none focus:border-orange-500 w-64 bg-gray-50">
+                </div>
+                <button id="btn-nuovo-mezzo" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg text-xs shadow transition flex items-center space-x-1.5 cursor-pointer">
+                    <i data-lucide="plus" class="w-4 h-4"></i><span>Nuovo Mezzo</span>
+                </button>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 border-b border-gray-200 text-xs uppercase font-bold text-gray-500">
+                            <th class="p-4 text-center">Azioni</th>
+                            <th class="p-4">ID</th>
+                            <th class="p-4">Macchina / Tipo</th>
+                            <th class="p-4">Potenza / Resa</th>
+                            <th class="p-4">Stato</th>
+                            <th class="p-4">Posizione Attuale</th> <th class="p-4 text-center">Elimina</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-mezzi" class="divide-y divide-gray-100 text-sm"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="sub-operatori" style="display: none;">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                <div class="flex flex-wrap items-center gap-4 flex-1">
+                    <h3 class="text-lg font-black text-gray-800 whitespace-nowrap">Gestione Capitale Umano</h3>
+                    <input type="text" id="cerca-operatori" placeholder="Cerca operatore o abilitazione..." class="px-3 py-1.5 text-xs border rounded-lg outline-none focus:border-orange-500 w-64 bg-gray-50">
+                </div>
+                <button id="btn-nuovo-operatore" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg text-xs shadow transition flex items-center space-x-1.5 cursor-pointer">
+                    <i data-lucide="plus" class="w-4 h-4"></i><span>Nuovo Operatore</span>
+                </button>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th class="p-4 w-12 text-xs font-bold uppercase text-gray-500 text-center">Mod.</th>
+                            <th class="p-4 text-xs font-bold uppercase text-gray-500">ID</th>
+                            <th class="p-4 text-xs font-bold uppercase text-gray-500">Nome</th>
+                            <th class="p-4 text-xs font-bold uppercase text-gray-500">Costo Orario</th>
+                            <th class="p-4 text-xs font-bold uppercase text-gray-500">Scad. Visita Medica</th>
+                            <th class="p-4 text-xs font-bold uppercase text-gray-500">Scad. Attestato Lavoro</th>
+                            <th class="p-4 text-xs font-bold uppercase text-gray-500">Patentini Posseduti</th>
+                            <th class="p-4 w-12 text-xs font-bold uppercase text-gray-500 text-center">Elim.</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-operatori" class="divide-y divide-gray-100 text-sm"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div id="modale-clienti" style="display: none;" class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl p-6 relative">
+            <button type="button" class="btn-chiudi absolute top-4 right-4 text-gray-400 hover:text-gray-700 cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 id="titolo-modale-cliente" class="text-xl font-bold text-gray-900 mb-4 border-b pb-2">Nuovo cliente</h3>
+            <form id="form-clienti">
+                <input type="hidden" id="cli-indice">
+                <input type="hidden" id="cli-id">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Ragione Sociale</label>
+                        <input type="text" id="cli-nome" required class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Partita IVA / Cod. Fiscale</label>
+                        <input type="text" id="cli-piva" class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Referente in Campo</label>
+                        <input type="text" id="cli-referente" required class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Telefono Referente</label>
+                        <input type="text" id="cli-telefono" required class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Indirizzo Sede Legale</label>
+                        <input type="text" id="cli-indirizzo" class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Coordinate GPS Campi (Lat, Lon)</label>
+                        <input type="text" id="cli-gps" placeholder="Es. 44.9753, 9.7745" required class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500 bg-blue-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Tipologia Coltura Prevalente</label>
+                        <select id="cli-coltura" class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500 bg-white">
+                            <option value="Seminativi">Seminativi</option>
+                            <option value="Vigneto">Vigneto</option>
+                            <option value="Frutteto">Frutteto</option>
+                            <option value="Foraggere">Foraggere</option>
+                            <option value="Elicicoltura">Elicicoltura</option>
+                            <option value="Misto">Misto</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="pt-6 flex justify-end">
+                    <button type="submit" class="bg-[#869b82] hover:bg-[#6c7d68] text-white px-6 py-2 rounded-md font-bold transition cursor-pointer">Salva Dati Cliente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modale-mezzi" style="display: none;" class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl p-6 relative">
+            <button type="button" class="btn-chiudi absolute top-4 right-4 text-gray-400 hover:text-gray-700 cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 id="titolo-modale-mezzo" class="text-xl font-bold text-gray-900 mb-4 border-b pb-2">Nuovo mezzo operativo</h3>
+            <form id="form-mezzi">
+                <input type="hidden" id="mez-indice">
+                <input type="hidden" id="mez-id">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Categoria Macro</label>
+                        <select id="mez-tipo" required class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500 bg-white">
+                            <option value="">Seleziona...</option>
+                            <option value="Trattore">Trattore</option>
+                            <option value="Mietitrebbia">Mietitrebbia</option>
+                            <option value="Escavatore">Escavatore</option>
+                            <option value="Furgone">Furgone</option>
+                            <option value="Drone">Drone</option>
+                            <option value="Botte Irroratrice">Botte Irroratrice</option>
+                            <option value="Trincia">Trincia / Attrezzo</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Modello e Motorizzazione</label>
+                        <select id="mez-nome" required class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500 bg-white">
+                            <option value="">Scegli categoria...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Potenza (CV) / Capacità (L)</label>
+                        <input type="number" id="mez-potenza" required placeholder="Es. 250" class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500 bg-blue-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Resa Oraria Nominale (Ha/Ora)</label>
+                        <input type="number" step="0.1" id="mez-resa" placeholder="Es. 2.5" class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500 bg-blue-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Targa / Telaio</label>
+                        <input type="text" id="mez-targa" required class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Stato Attuale</label>
+                        <select id="mez-stato" class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500 bg-white">
+                            <option value="Disponibile">Disponibile</option>
+                            <option value="In Manutenzione">In Manutenzione</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Scadenza Assicurazione</label>
+                        <input type="date" id="mez-scad-ass" class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500 text-gray-600">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Prossima Revisione/Tagliando</label>
+                        <input type="date" id="mez-scad-rev" class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500 text-gray-600">
+                    </div>
+                </div>
+                <div class="pt-6 flex justify-end">
+                    <button type="submit" class="bg-[#869b82] hover:bg-[#6c7d68] text-white px-6 py-2 rounded-md font-bold transition cursor-pointer">Salva Hardware</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modale-operatori" style="display: none;" class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center z-50 overflow-y-auto p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl p-6 relative my-auto">
+            <button type="button" class="btn-chiudi absolute top-4 right-4 text-gray-400 hover:text-gray-700 cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 id="titolo-modale-operatore" class="text-xl font-bold text-gray-900 mb-4 border-b pb-2">Nuovo dipendente/operatore</h3>
+            <form id="form-operatori">
+                <input type="hidden" id="ope-indice">
+                <input type="hidden" id="ope-id">
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Nome e Cognome</label>
+                        <input type="text" id="ope-nome" required class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Costo Orario Interno (€/h)</label>
+                        <input type="number" step="0.5" id="ope-costo" required class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500 bg-blue-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Email (Accesso App)</label>
+                        <input type="email" id="ope-email" required class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Password</label>
+                        <input type="text" id="ope-password" required class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Telefono Diretto</label>
+                        <input type="text" id="ope-telefono" required class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500">
+                    </div>
+
+                    <div class="col-span-2 border-t pt-3">
+                        <h4 class="text-sm font-bold text-emerald-900 uppercase tracking-wider mb-2">Certificazioni Generali Obbligatorie</h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Scadenza Visita Medica Lavoro</label>
+                                <input type="date" id="ope-scad-visita" class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500 text-gray-700">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Scadenza Attestato Formazione Sicurezza</label>
+                                <input type="date" id="ope-scad-attestato" class="w-full px-3 py-2 border rounded-md outline-none focus:border-orange-500 text-gray-700">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-span-2 border-t pt-3">
+                        <h4 class="text-sm font-bold text-emerald-900 uppercase tracking-wider mb-2">Abilitazioni e Patentini Specifici</h4>
+                        <div class="space-y-3 text-sm text-gray-700">
+
+                            <div class="flex items-center justify-between gap-4 p-2 border rounded-lg bg-gray-50">
+                                <label class="flex items-center space-x-2 font-medium">
+                                    <input type="checkbox" id="chk-patente" class="rounded text-emerald-600 focus:ring-emerald-500">
+                                    <span>Patente CE / CQC</span>
+                                </label>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs text-gray-500 font-bold">Scadenza:</span>
+                                    <input type="date" id="ope-scad-patente" class="px-2 py-1 text-xs border rounded-md outline-none focus:border-orange-500 bg-white">
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between gap-4 p-2 border rounded-lg bg-gray-50">
+                                <label class="flex items-center space-x-2 font-medium">
+                                    <input type="checkbox" id="chk-trattori" class="rounded text-emerald-600 focus:ring-emerald-500">
+                                    <span>Patentino Macchine Agricole</span>
+                                </label>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs text-gray-500 font-bold">Scadenza:</span>
+                                    <input type="date" id="ope-scad-trattori" class="px-2 py-1 text-xs border rounded-md outline-none focus:border-orange-500 bg-white">
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between gap-4 p-2 border rounded-lg bg-gray-50">
+                                <label class="flex items-center space-x-2 font-medium">
+                                    <input type="checkbox" id="chk-fito" class="rounded text-emerald-600 focus:ring-emerald-500">
+                                    <span>Patentino Fitosanitario</span>
+                                </label>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs text-gray-500 font-bold">Scadenza:</span>
+                                    <input type="date" id="ope-scad-fito" class="px-2 py-1 text-xs border rounded-md outline-none focus:border-orange-500 bg-white">
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between gap-4 p-2 border rounded-lg bg-gray-50">
+                                <label class="flex items-center space-x-2 font-medium">
+                                    <input type="checkbox" id="chk-drone" class="rounded text-emerald-600 focus:ring-emerald-500">
+                                    <span>Licenza Pilota Drone (A2/Specific)</span>
+                                </label>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs text-gray-500 font-bold">Scadenza:</span>
+                                    <input type="date" id="ope-scad-drone" class="px-2 py-1 text-xs border rounded-md outline-none focus:border-orange-500 bg-white">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-6 flex justify-end">
+                    <button type="submit" class="bg-[#869b82] hover:bg-[#6c7d68] text-white px-6 py-2 rounded-md font-bold transition cursor-pointer">Salva Operatore</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/anagrafiche.js"></script>
+</body>
+</html>

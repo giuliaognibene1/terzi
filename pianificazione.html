@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEROMECH - Pianificazione</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="assets/css/stile.css">
+</head>
+<body class="bg-gray-50 font-sans text-gray-900 flex min-h-screen relative">
+
+    <aside class="w-64 bg-sidebar text-gray-300 flex flex-col justify-between p-4 flex-shrink-0 z-20 shadow-lg">
+        <div>
+            <div class="flex items-center space-x-3 pb-6 mb-6 border-b border-emerald-900">
+                <div class="bg-orange-500 text-white p-2 rounded"><i data-lucide="tractor" class="w-6 h-6"></i></div>
+                <div>
+                    <h1 class="font-bold text-white tracking-wide text-lg leading-none">AEROMECH</h1>
+                    <span class="text-xs text-emerald-400 font-medium tracking-wider uppercase">Cantiere Contoterzi</span>
+                </div>
+            </div>
+            <nav class="space-y-1">
+                <a href="index.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span>Dashboard</span></a>
+                <a href="anagrafiche.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="folder-open" class="w-5 h-5"></i><span>Anagrafica</span></a>
+                <a href="commesse.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="clipboard-list" class="w-5 h-5"></i><span>Commesse</span></a>
+                <a href="pianificazione.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="calendar-days" class="w-5 h-5"></i><span>Pianificazione</span></a>
+                <a href="fatturazione.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="receipt" class="w-5 h-5"></i><span>Preventivi e Fatture</span></a>
+                <a href="storico.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="archive" class="w-5 h-5"></i><span>Storico Lavori</span></a>
+                <a href="scadenze.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="alert-triangle" class="w-5 h-5"></i><span>Scadenze</span></a>
+                <a href="azienda.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="building-2" class="w-5 h-5"></i><span>Sede Azienda</span></a>
+            </nav>
+        </div>
+        <div class="pt-4 border-t border-emerald-900">
+            <button id="btn-logout" class="flex items-center space-x-2 text-sm text-gray-400 hover:text-white transition w-full text-left cursor-pointer"><i data-lucide="log-out" class="w-4 h-4"></i><span>Esci</span></button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        <div class="p-5 bg-white border-b border-gray-200 shadow-sm flex justify-between items-center z-10 flex-shrink-0">
+            <div>
+                <h2 class="text-2xl font-black text-gray-900">Calendario e Flotta</h2>
+                <p class="text-xs text-gray-500 mt-0.5">Pianifica le commesse in attesa sfruttando il calcolo logistico stradale.</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button id="btn-impostazioni-orari" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg text-xs shadow-sm transition flex items-center space-x-2 cursor-pointer">
+                    <i data-lucide="settings" class="w-4 h-4"></i><span>Orari Aziendali</span>
+                </button>
+                <button id="btn-ottimizza-ai" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2 px-4 rounded-lg text-xs shadow transition flex items-center space-x-2 cursor-pointer">
+                    <i data-lucide="cpu" class="w-4 h-4"></i><span>Ottimizza Flotta (IA)</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-gray-100 border-b border-gray-200 p-4 flex-shrink-0 shadow-inner">
+            <div class="flex justify-between items-center mb-2">
+                <h3 class="font-bold text-gray-800 text-sm flex items-center"><i data-lucide="list-todo" class="w-4 h-4 mr-2 text-emerald-700"></i>Lavori in Attesa di Assegnazione</h3>
+                <div class="relative w-64">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400"><i data-lucide="search" class="w-3.5 h-3.5"></i></span>
+                    <input type="text" id="cerca-attesa" placeholder="Cerca cliente o lavorazione..." class="w-full pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs outline-none focus:border-emerald-600 shadow-sm">
+                </div>
+            </div>
+            <div id="contenitore-commesse-attesa" class="flex overflow-x-auto space-x-3 pb-1 min-h-[110px] items-center">
+                </div>
+        </div>
+
+        <div class="flex-1 overflow-auto bg-white relative">
+            <table class="w-full text-left border-collapse min-w-max">
+                <thead id="head-calendario" class="bg-gray-50 sticky top-0 z-20 shadow-sm">
+                    </thead>
+                <tbody id="body-calendario" class="divide-y divide-gray-100 text-sm">
+                    </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div id="modale-pianificazione" style="display: none;" class="fixed inset-0 bg-gray-900 bg-opacity-70 items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden relative">
+            <div class="bg-emerald-800 p-5 text-white flex justify-between items-center">
+                <h3 class="text-lg font-black"><i data-lucide="calendar-plus" class="w-5 h-5 inline mr-2"></i>Assegna Lavoro</h3>
+                <button type="button" class="btn-chiudi text-emerald-200 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="form-pianificazione" class="p-6 space-y-5">
+                <input type="hidden" id="pian-idcommessa">
+                <input type="hidden" id="pian-lavorazione">
+
+                <div class="bg-gray-50 border border-gray-200 rounded p-3 text-sm font-medium text-gray-800 mb-4">
+                    <span class="text-xs font-bold text-emerald-700 uppercase block mb-1">Riepilogo Lavoro Selezionato:</span>
+                    <span id="riepilogo-commessa"></span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 border-b pb-5">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Data Esecuzione</label>
+                        <input type="date" id="pian-data" required class="w-full px-3 py-2 border rounded bg-white text-sm">
+                        <p id="avviso-data-fuori" class="text-[10px] text-red-600 font-bold hidden mt-1">Data fuori dalla finestra richiesta!</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">Orario Inizio</label>
+                            <input type="time" id="pian-orainizio" required class="w-full px-2 py-2 border rounded bg-white text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">Orario Fine</label>
+                            <input type="time" id="pian-orafine" required class="w-full px-2 py-2 border rounded bg-white text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 pb-2">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Macchina/Attrezzatura</label>
+                        <select id="pian-idmezzo" required class="w-full px-3 py-2 border rounded bg-white text-sm"></select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Operatore Assegnato</label>
+                        <select id="pian-idoperatore" required class="w-full px-3 py-2 border rounded bg-white text-sm"></select>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 text-white rounded p-4 mt-4 shadow-inner">
+                    <h4 class="text-xs font-bold text-gray-400 uppercase mb-3">Stima Resa Economica Cantiere</h4>
+                    <div class="grid grid-cols-3 gap-4 text-center divide-x divide-gray-600">
+                        <div>
+                            <span class="block text-[10px] uppercase text-gray-400">Ricavo Est.</span>
+                            <span id="econ-ricavo" class="text-lg font-black text-white">€ 0.00</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] uppercase text-gray-400">Costo Vivo</span>
+                            <span id="econ-costo" class="text-lg font-black text-gray-300">€ 0.00</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] uppercase font-bold text-emerald-400">Margine Netto</span>
+                            <span id="econ-margine" class="text-lg font-black text-emerald-400">€ 0.00</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-2 border-t border-gray-700 text-[9px] text-gray-400 space-y-1">
+                        <p id="calc-dettaglio-ricavo"></p>
+                        <p id="calc-dettaglio-costo"></p>
+                    </div>
+                </div>
+
+                <div class="pt-2 flex justify-end">
+                    <button type="submit" id="btn-conferma-cantiere" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2 px-5 rounded text-sm shadow transition cursor-pointer">Conferma Assegnazione</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modale-visualizzazione" style="display: none;" class="fixed inset-0 bg-gray-900 bg-opacity-70 items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden relative">
+            <div class="bg-gray-900 p-4 text-white flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="info" class="w-5 h-5 text-blue-400"></i>
+                    <h3 class="text-lg font-black">Dettaglio Cantiere</h3>
+                </div>
+                <button type="button" id="btn-chiudi-view" class="text-gray-400 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <span id="view-id-cantiere" class="text-[10px] font-mono text-gray-500 bg-gray-100 px-2 py-1 rounded">CANT-00000</span>
+                        <h2 id="view-lavorazione" class="text-xl font-black text-gray-900 mt-2">Lavorazione</h2>
+                        <p id="view-cliente" class="text-sm font-bold text-emerald-700">Cliente</p>
+                    </div>
+                    <span id="view-data-lavoro" class="bg-blue-50 text-blue-800 border border-blue-200 text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm">Data</span>
+                </div>
+
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3 my-4">
+                    <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+                        <span class="text-xs font-bold text-gray-500 uppercase">Orario Lavoro in Campo</span>
+                        <span id="view-orario" class="text-sm font-black text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">--:-- - --:--</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <div class="bg-white border border-gray-200 rounded p-2.5 shadow-sm">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase block mb-1">Trasferimento Andata</span>
+                            <p id="view-trasferimento-andata" class="font-bold text-gray-800 text-sm">-- min</p>
+                            <span id="view-origine-andata" class="text-[10px] text-gray-500 block truncate mt-0.5">Da Sede</span>
+                        </div>
+                        <div class="bg-white border border-gray-200 rounded p-2.5 shadow-sm">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase block mb-1">Trasferimento Ritorno</span>
+                            <p id="view-trasferimento-ritorno" class="font-bold text-gray-800 text-sm">-- min</p>
+                            <span id="view-destinazione-ritorno" class="text-[10px] text-gray-500 block truncate mt-0.5">A Sede</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 text-sm mt-4">
+                    <div><span class="block text-xs text-gray-500">Macchina / Mezzo:</span><span id="view-macchina" class="font-bold text-gray-800">Mezzo</span></div>
+                    <div><span class="block text-xs text-gray-500">Operatore / Autista:</span><span id="view-operatore" class="font-bold text-gray-800">Operatore</span></div>
+                    <div><span class="block text-xs text-gray-500">Superficie:</span><span id="view-ettari" class="font-bold text-gray-800">0 Ha</span></div>
+                </div>
+
+                <div id="blocco-note-view" class="mt-4 pt-4 border-t border-gray-100" style="display: none;">
+                    <span class="block text-xs font-bold text-gray-500 mb-1 uppercase">Note Operative:</span>
+                    <p id="view-note" class="text-sm text-gray-700 bg-yellow-50 border border-yellow-200 p-3 rounded"></p>
+                </div>
+
+                <div class="mt-5 space-y-2">
+                    <a href="#" id="view-telefono" class="w-full justify-center bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 font-bold py-2.5 px-4 rounded shadow-sm transition items-center space-x-2 text-sm text-center">
+                        <i data-lucide="phone" class="w-4 h-4"></i><span>Chiama Referente</span>
+                    </a>
+
+                    <div id="view-gps" class="w-full flex-col bg-gray-50 border border-gray-200 p-3 rounded text-sm text-center">
+                        <span class="text-xs font-mono text-gray-600 block mb-2 font-bold">Coordinate: ...</span>
+                        <a href="#" id="view-mappa-link" class="bg-gray-800 hover:bg-black text-white font-bold py-2 px-4 rounded shadow transition items-center space-x-2 text-xs inline-flex justify-center cursor-pointer">
+                            <i data-lucide="navigation" class="w-4 h-4"></i><span>Naviga da Sede</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-gray-200 flex justify-between items-center">
+                    <button type="button" id="btn-elimina-da-view" class="text-red-500 hover:text-red-700 text-xs font-bold flex items-center cursor-pointer"><i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Elimina dal Calendario</button>
+                    <button type="button" id="btn-chiudi-view-basso" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1.5 px-4 rounded text-sm cursor-pointer">Chiudi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modale-impostazioni" style="display: none;" class="fixed inset-0 bg-gray-900 bg-opacity-70 items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm overflow-hidden relative">
+            <div class="bg-gray-800 p-5 text-white flex justify-between items-center">
+                <h3 class="text-lg font-black"><i data-lucide="clock" class="w-5 h-5 inline mr-2"></i>Orari di Lavoro</h3>
+                <button type="button" class="btn-chiudi-impostazioni text-gray-400 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="form-impostazioni" class="p-6 space-y-4">
+                <p class="text-xs text-gray-500 mb-4">L'algoritmo di pianificazione rispetterà questi limiti orari.</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Inizio Giornata</label>
+                        <input type="time" id="imposta-inizio" required class="w-full px-3 py-2 border rounded bg-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Fine Giornata</label>
+                        <input type="time" id="imposta-fine" required class="w-full px-3 py-2 border rounded bg-white text-sm">
+                    </div>
+                </div>
+                <div class="pt-4 mt-2 border-t flex justify-end">
+                    <button type="submit" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2 px-5 rounded text-sm shadow transition cursor-pointer">Salva Impostazioni</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/pianificazione.js"></script>
+</body>
+</html>

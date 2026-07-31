@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEROMECH - Profilo Azienda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="assets/css/stile.css">
+</head>
+<body class="bg-gray-50 font-sans text-gray-900 flex min-h-screen relative">
+
+    <aside class="w-64 bg-sidebar text-gray-300 flex flex-col justify-between p-4 flex-shrink-0 z-20 shadow-lg">
+        <div>
+            <div class="flex items-center space-x-3 pb-6 mb-6 border-b border-emerald-900">
+                <div class="bg-orange-500 text-white p-2 rounded"><i data-lucide="tractor" class="w-6 h-6"></i></div>
+                <div>
+                    <h1 class="font-bold text-white tracking-wide text-lg leading-none">AEROMECH</h1>
+                    <span class="text-xs text-emerald-400 font-medium tracking-wider uppercase">Cantiere Contoterzi</span>
+                </div>
+            </div>
+            <nav class="space-y-1">
+                <a href="index.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span>Dashboard</span></a>
+                <a href="anagrafiche.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="folder-open" class="w-5 h-5"></i><span>Anagrafica</span></a>
+                <a href="commesse.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="clipboard-list" class="w-5 h-5"></i><span>Commesse</span></a>
+                <a href="pianificazione.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="calendar-days" class="w-5 h-5"></i><span>Pianificazione</span></a>
+                <a href="fatturazione.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="receipt" class="w-5 h-5"></i><span>Preventivi e Fatture</span></a>
+                <a href="storico.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="archive" class="w-5 h-5"></i><span>Storico Lavori</span></a>
+                <a href="scadenze.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="alert-triangle" class="w-5 h-5"></i><span>Scadenze</span></a>
+                <a href="azienda.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="building-2" class="w-5 h-5"></i><span>Sede Azienda</span></a>
+            </nav>
+        </div>
+        <div class="pt-4 border-t border-emerald-900">
+            <button id="btn-logout" class="flex items-center space-x-2 text-sm text-gray-400 hover:text-white transition w-full text-left cursor-pointer"><i data-lucide="log-out" class="w-4 h-4"></i><span>Esci</span></button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto relative">
+        <div class="p-6 bg-white border-b border-gray-200 shadow-sm flex justify-between items-center">
+            <div>
+                <h2 class="text-2xl font-black text-gray-900">Sede e Profilo Aziendale</h2>
+                <p class="text-sm text-gray-500 mt-1">Configura le coordinate della sede operativa per il calcolo dei percorsi e dei tempi di trasferimento.</p>
+            </div>
+        </div>
+
+        <div class="p-6 max-w-4xl">
+            <form id="form-azienda" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-6">
+                <div class="border-b pb-4">
+                    <h3 class="text-base font-bold text-gray-900 flex items-center"><i data-lucide="building" class="w-5 h-5 mr-2 text-emerald-700"></i> Dati Anagrafici Sede Centralizzata</h3>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Ragione Sociale / Nome Azienda</label>
+                        <input type="text" id="azi-ragione-sociale" required placeholder="Es. Agriservizi Canossa Srl" class="w-full px-3 py-2 border rounded-lg bg-white text-sm outline-none focus:border-emerald-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Partita IVA / Codice Fiscale</label>
+                        <input type="text" id="azi-piva" placeholder="IT01234567890" class="w-full px-3 py-2 border rounded-lg bg-white text-sm outline-none focus:border-emerald-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Indirizzo Sede Operativa</label>
+                        <input type="text" id="azi-indirizzo" placeholder="Via Emilia San Pietro 10, Reggio Emilia" class="w-full px-3 py-2 border rounded-lg bg-white text-sm outline-none focus:border-emerald-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Coordinate GPS Sede (Lat, Lng)</label>
+                        <input type="text" id="azi-gps" required placeholder="Es. 44.6982, 10.6312" class="w-full px-3 py-2 border rounded-lg bg-white text-sm outline-none focus:border-emerald-600">
+                        <p class="text-[11px] text-gray-400 mt-1">Essenziale per calcolare i minuti di viaggio dei trattori dalla sede al primo cantiere del mattino.</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Telefono Centralino / Sede</label>
+                        <input type="text" id="azi-telefono" placeholder="0522 123456" class="w-full px-3 py-2 border rounded-lg bg-white text-sm outline-none focus:border-emerald-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Email Aziendale</label>
+                        <input type="email" id="azi-email" placeholder="info@agriservizi.it" class="w-full px-3 py-2 border rounded-lg bg-white text-sm outline-none focus:border-emerald-600">
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t flex justify-end">
+                    <button type="submit" class="bg-emerald-800 hover:bg-emerald-950 text-white font-bold py-2.5 px-6 rounded-lg text-sm shadow transition flex items-center space-x-2 cursor-pointer">
+                        <i data-lucide="save" class="w-4 h-4"></i><span>Salva Profilo Sede</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/azienda.js"></script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEROMECH - Storico Lavori</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="assets/css/stile.css">
+</head>
+<body class="bg-gray-50 font-sans text-gray-900 flex min-h-screen relative">
+
+    <aside class="w-64 bg-sidebar text-gray-300 flex flex-col justify-between p-4 flex-shrink-0 z-20 shadow-lg">
+        <div>
+            <div class="flex items-center space-x-3 pb-6 mb-6 border-b border-emerald-900">
+                <div class="bg-orange-500 text-white p-2 rounded"><i data-lucide="tractor" class="w-6 h-6"></i></div>
+                <div>
+                    <h1 class="font-bold text-white tracking-wide text-lg leading-none">AEROMECH</h1>
+                    <span class="text-xs text-emerald-400 font-medium tracking-wider uppercase">Cantiere Contoterzi</span>
+                </div>
+            </div>
+            <nav class="space-y-1">
+                <a href="index.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span>Dashboard</span></a>
+                <a href="anagrafiche.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="folder-open" class="w-5 h-5"></i><span>Anagrafica</span></a>
+                <a href="commesse.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="clipboard-list" class="w-5 h-5"></i><span>Commesse</span></a>
+                <a href="pianificazione.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="calendar-days" class="w-5 h-5"></i><span>Pianificazione</span></a>
+                <a href="fatturazione.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="receipt" class="w-5 h-5"></i><span>Preventivi e Fatture</span></a>
+                <a href="storico.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="archive" class="w-5 h-5"></i><span>Storico Lavori</span></a>
+                <a href="scadenze.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="alert-triangle" class="w-5 h-5"></i><span>Scadenze</span></a>
+                <a href="azienda.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="building-2" class="w-5 h-5"></i><span>Sede Azienda</span></a>
+            </nav>
+        </div>
+        <div class="pt-4 border-t border-emerald-900">
+            <button id="btn-logout" class="flex items-center space-x-2 text-sm text-gray-400 hover:text-white transition w-full text-left cursor-pointer"><i data-lucide="log-out" class="w-4 h-4"></i><span>Esci</span></button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto relative">
+        <div class="p-6 bg-white border-b border-gray-200 shadow-sm flex justify-between items-center z-10 flex-shrink-0">
+            <div>
+                <h2 class="text-2xl font-black text-gray-900">Storico e Consuntivi</h2>
+                <p class="text-sm text-gray-500 mt-1">Verifica le ore reali dei cantieri passati e chiudi i lavori per la fatturazione.</p>
+            </div>
+            <div class="relative w-64">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400"><i data-lucide="search" class="w-4 h-4"></i></span>
+                <input type="text" id="cerca-storico" placeholder="Ricerca libera..." class="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm outline-none focus:border-emerald-600 shadow-sm">
+            </div>
+        </div>
+
+        <div class="p-6 space-y-6">
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                <div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-2">
+                    <h3 class="font-bold text-gray-700 text-sm flex items-center"><i data-lucide="filter" class="w-4 h-4 mr-2 text-emerald-600"></i>Filtri di Ricerca Avanzati</h3>
+                    <button id="btn-reset-filtri" class="text-xs text-gray-500 hover:text-red-500 font-bold transition flex items-center cursor-pointer"><i data-lucide="rotate-ccw" class="w-3 h-3 mr-1"></i>Azzera Filtri</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Da Data</label>
+                        <input type="date" id="filtro-data-da" class="w-full px-2 py-1.5 border rounded bg-white text-xs outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">A Data</label>
+                        <input type="date" id="filtro-data-a" class="w-full px-2 py-1.5 border rounded bg-white text-xs outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Cliente</label>
+                        <select id="filtro-cliente" class="w-full px-2 py-1.5 border rounded bg-white text-xs outline-none focus:border-emerald-500">
+                            <option value="">Tutti i Clienti</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Macchina</label>
+                        <select id="filtro-mezzo" class="w-full px-2 py-1.5 border rounded bg-white text-xs outline-none focus:border-emerald-500">
+                            <option value="">Tutte le Macchine</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Operatore</label>
+                        <select id="filtro-operatore" class="w-full px-2 py-1.5 border rounded bg-white text-xs outline-none focus:border-emerald-500">
+                            <option value="">Tutti gli Operatori</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-orange-200 overflow-hidden">
+                <div class="bg-orange-50 p-4 border-b border-orange-200 flex items-center justify-between">
+                    <h3 class="font-bold text-orange-800 flex items-center"><i data-lucide="clock-4" class="w-5 h-5 mr-2"></i>Lavori Eseguiti da Confermare</h3>
+                    <span id="badge-da-confermare" class="bg-orange-600 text-white text-xs font-bold px-2 py-1 rounded">0</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-white border-b border-gray-100 text-gray-500 uppercase text-xs">
+                            <tr>
+                                <th class="p-4 font-bold w-24">Data</th>
+                                <th class="p-4 font-bold w-32">ID Commessa</th>
+                                <th class="p-4 font-bold">Cliente / Lavorazione</th>
+                                <th class="p-4 font-bold">Flotta (Mezzo + Operatore)</th>
+                                <th class="p-4 font-bold w-32">Ore Previste</th>
+                                <th class="p-4 text-center font-bold w-32">Azione</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-da-confermare" class="divide-y divide-gray-100">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="bg-gray-50 p-4 border-b border-gray-200 flex items-center justify-between">
+                    <h3 class="font-bold text-gray-800 flex items-center"><i data-lucide="check-square" class="w-5 h-5 mr-2 text-emerald-700"></i>Archivio Lavori Completati</h3>
+                    <span id="badge-completati" class="bg-gray-200 text-gray-700 text-xs font-bold px-2 py-1 rounded">0</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-white border-b border-gray-100 text-gray-500 uppercase text-xs">
+                            <tr>
+                                <th class="p-4 font-bold w-24">Data</th>
+                                <th class="p-4 font-bold w-32">ID Commessa</th>
+                                <th class="p-4 font-bold">Cliente / Lavorazione</th>
+                                <th class="p-4 font-bold">Mezzo</th>
+                                <th class="p-4 font-bold w-32">Ore Effettive</th>
+                                <th class="p-4 font-bold w-32">Margine Reale</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-completati" class="divide-y divide-gray-100">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="modale-consuntivo" style="display: none;" class="fixed inset-0 bg-gray-900 bg-opacity-70 items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden relative">
+            <div class="bg-orange-600 p-5 text-white flex justify-between items-center">
+                <h3 class="text-lg font-black flex items-center"><i data-lucide="calculator" class="w-5 h-5 mr-2"></i>Consuntivo Lavoro</h3>
+                <button type="button" class="btn-chiudi-consuntivo text-orange-200 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="form-consuntivo" class="p-6 space-y-5">
+                <input type="hidden" id="cons-idcantiere">
+
+                <div class="bg-gray-50 border border-gray-200 rounded p-4 text-sm">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h4 id="cons-titolo" class="font-black text-gray-900 text-lg">Cliente N/D</h4>
+                            <p id="cons-dettagli" class="text-gray-600 font-medium text-xs">Lavorazione</p>
+                        </div>
+                        <span id="cons-id-commessa-badge" class="font-mono text-xs font-bold text-orange-700 bg-orange-100 border border-orange-200 px-2 py-1 rounded">COM-00000</span>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-gray-200 grid grid-cols-2 gap-4">
+                        <div>
+                            <span class="block text-[10px] text-gray-400 uppercase font-bold">Ore Stimate (Pianificate)</span>
+                            <span id="cons-ore-stimate" class="font-mono text-gray-800">0.0 h</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] text-gray-400 uppercase font-bold">Margine Stimato</span>
+                            <span id="cons-margine-stimato" class="font-mono text-emerald-700 font-bold">€ 0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-200 pt-4">
+                    <label class="block text-sm font-black text-gray-800 mb-2">Ore Effettive di Lavoro (compresi imprevisti e ritardi)</label>
+                    <div class="flex items-center space-x-3">
+                        <input type="number" step="0.1" min="0.1" id="cons-ore-reali" required class="w-32 px-4 py-3 border border-gray-300 rounded-lg text-lg font-bold outline-none focus:border-orange-500 text-center">
+                        <span class="text-gray-500 font-medium">Ore lavorate in totale</span>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 text-white rounded p-4 mt-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs uppercase font-bold text-gray-400">Nuovo Margine Netto Effettivo:</span>
+                        <span id="cons-margine-nuovo" class="text-xl font-black text-white">€ 0.00</span>
+                    </div>
+                </div>
+
+                <div class="pt-4 flex justify-end">
+                    <button type="submit" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2.5 px-6 rounded-lg text-sm shadow transition cursor-pointer">Salva e Archivia</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/storico.js"></script>
+</body>
+</html>
