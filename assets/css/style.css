@@ -1,0 +1,14 @@
+:root {
+    --bg-verde-scuro: #0f2a1d;
+}
+
+.bg-tema-scuro { background-color: var(--bg-verde-scuro); }
+.bg-sidebar { background-color: var(--bg-verde-scuro); }
+.nascosto { display: none !important; }
+
+button:active { transform: scale(0.98); }
+
+main {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f8fafc;
+}
