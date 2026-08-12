@@ -7,17 +7,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="assets/css/stile.css">
+    <style>
+        /* Stili aggiuntivi per i radio button nascosti */
+        input[type="radio"]:checked + div {
+            border-color: #047857; /* emerald-700 */
+            background-color: #ecfdf5; /* emerald-50 */
+        }
+        input[type="radio"]:checked + div .icona-ruolo {
+            color: #047857;
+        }
+    </style>
 </head>
 <body class="bg-gray-100 font-sans text-gray-900 flex min-h-screen items-center justify-center p-4">
 
     <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden border border-gray-200">
 
-        <div class="bg-tema-scuro p-8 text-center">
+        <div class="bg-tema-scuro p-8 text-center" style="background-color: #0f2a1d;">
             <div class="inline-flex items-center justify-center bg-orange-500 text-white p-3 rounded-xl mb-4 shadow-lg">
-                <i data-lucide="tractor" class="w-8 h-8"></i>
+                <i data-lucide="leaf" class="w-8 h-8"></i>
             </div>
             <h1 class="font-black text-white tracking-wide text-2xl uppercase">AEROMECH</h1>
-            <p class="text-sm text-emerald-400 font-medium tracking-wider uppercase mt-1">Rete Operatori Agromeccanici</p>
+            <p class="text-sm text-emerald-400 font-medium tracking-wider uppercase mt-1">Il Portale Agromeccanico</p>
         </div>
 
         <div class="p-8">
@@ -26,6 +36,24 @@
                 <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Entra nel sistema</h2>
 
                 <form id="form-login" class="space-y-5">
+
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="ruolo_login" value="terzista" class="hidden" checked>
+                            <div class="border-2 border-gray-200 rounded-xl p-3 text-center transition hover:border-emerald-300">
+                                <i data-lucide="tractor" class="w-6 h-6 mx-auto mb-1 text-gray-400 icona-ruolo"></i>
+                                <span class="block text-sm font-bold text-gray-700">Contoterzista</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="ruolo_login" value="agricoltore" class="hidden">
+                            <div class="border-2 border-gray-200 rounded-xl p-3 text-center transition hover:border-emerald-300">
+                                <i data-lucide="map" class="w-6 h-6 mx-auto mb-1 text-gray-400 icona-ruolo"></i>
+                                <span class="block text-sm font-bold text-gray-700">Agricoltore</span>
+                            </div>
+                        </label>
+                    </div>
+
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Indirizzo Email</label>
                         <div class="relative">
@@ -46,23 +74,48 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="w-full bg-emerald-800 hover:bg-emerald-950 text-white font-bold py-3.5 px-4 rounded-lg shadow-md transition text-lg mt-2">
-                        Accedi ai Lavori
+                    <button type="submit" class="w-full bg-emerald-800 hover:bg-emerald-950 text-white font-bold py-3.5 px-4 rounded-lg shadow-md transition text-lg mt-2 cursor-pointer">
+                        Accedi
                     </button>
                 </form>
 
+                <div class="flex items-center justify-between text-xs mt-2 mb-4">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="rounded text-emerald-600 mr-1"> Ricordami
+                    </label>
+                    <a href="recupero.html" class="text-emerald-800 font-bold hover:underline">Password dimenticata?</a>
+                </div>
+
                 <div class="mt-8 text-center">
-                    <p class="text-sm text-gray-600">Non hai ancora registrato l'azienda?</p>
-                    <button type="button" id="btn-vai-registrazione" class="mt-2 text-orange-600 font-bold hover:text-orange-700 transition">
+                    <p class="text-sm text-gray-600">Non hai ancora un account?</p>
+                    <button type="button" id="btn-vai-registrazione" class="mt-2 text-orange-600 font-bold hover:text-orange-700 transition cursor-pointer">
                         Crea un nuovo profilo gratuito
                     </button>
                 </div>
             </div>
 
-            <div id="modulo-registrazione" class="nascosto">
-                <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Registra la tua Azienda</h2>
+            <div id="modulo-registrazione" class="nascosto hidden">
+                <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Crea il tuo profilo</h2>
 
                 <form id="form-registrazione" class="space-y-4">
+
+                    <div class="grid grid-cols-2 gap-3 mb-2">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="ruolo_reg" value="terzista" class="hidden" checked>
+                            <div class="border-2 border-gray-200 rounded-xl p-3 text-center transition hover:border-emerald-300">
+                                <i data-lucide="tractor" class="w-6 h-6 mx-auto mb-1 text-gray-400 icona-ruolo"></i>
+                                <span class="block text-sm font-bold text-gray-700">Sono un Terzista</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="ruolo_reg" value="agricoltore" class="hidden">
+                            <div class="border-2 border-gray-200 rounded-xl p-3 text-center transition hover:border-emerald-300">
+                                <i data-lucide="map" class="w-6 h-6 mx-auto mb-1 text-gray-400 icona-ruolo"></i>
+                                <span class="block text-sm font-bold text-gray-700">Sono Agricoltore</span>
+                            </div>
+                        </label>
+                    </div>
+
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Nome Azienda (Ragione Sociale)</label>
                         <input type="text" id="reg-nome" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-700 outline-none transition" placeholder="Es. Azienda Agricola Rossi">
@@ -78,14 +131,14 @@
                         <input type="password" id="reg-password" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-700 outline-none transition" placeholder="Scegli una password sicura">
                     </div>
 
-                    <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 px-4 rounded-lg shadow-md transition text-lg mt-4">
+                    <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 px-4 rounded-lg shadow-md transition text-lg mt-4 cursor-pointer">
                         Conferma e Registra
                     </button>
                 </form>
 
                 <div class="mt-8 text-center">
                     <p class="text-sm text-gray-600">Hai già registrato la tua azienda?</p>
-                    <button type="button" id="btn-vai-accesso" class="mt-2 text-emerald-800 font-bold hover:text-emerald-950 transition">
+                    <button type="button" id="btn-vai-accesso" class="mt-2 text-emerald-800 font-bold hover:text-emerald-950 transition cursor-pointer">
                         Torna alla schermata di accesso
                     </button>
                 </div>
@@ -94,6 +147,7 @@
         </div>
     </div>
 
+    <script>lucide.createIcons();</script>
     <script src="assets/js/accesso.js"></script>
 </body>
 </html>
