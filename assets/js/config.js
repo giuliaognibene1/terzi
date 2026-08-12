@@ -52,6 +52,19 @@ document.addEventListener("DOMContentLoaded", function() {
         if (document.getElementById('saluto-nome')) document.getElementById('saluto-nome').textContent = 'Ciao, ' + datiUtente.nome;
     }
 
+    // --- NOVITÀ: RECUPERO NOME AZIENDA ---
+    const etichettaTerzista = document.getElementById('etichetta-terzista');
+    if (etichettaTerzista) {
+        const profilo = window.leggiDatabase('profilo_azienda');
+        // Verifica che il profilo esista, non sia un array vuoto e abbia la proprietà ragioneSociale
+        if (profilo && !Array.isArray(profilo) && profilo.ragioneSociale) {
+            etichettaTerzista.textContent = profilo.ragioneSociale;
+        } else {
+            etichettaTerzista.textContent = 'Configura Profilo';
+        }
+    }
+    // --------------------------------------
+
     if (document.getElementById('data-odierna')) {
         const opzioniData = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('data-odierna').textContent = new Date().toLocaleDateString('it-IT', opzioniData);
@@ -73,7 +86,12 @@ document.addEventListener("DOMContentLoaded", function() {
         if (urlBrowser.includes(paginaLinkata)) {
             link.className = "flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-emerald-900 text-white font-medium transition cursor-pointer";
         } else {
-            link.className = "flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer";
+            // Nota: ho lasciato i colori originali che avevi impostato, adatti al tema scuro/chiaro che stai usando
+            if (document.querySelector('aside').classList.contains('bg-white')) {
+                link.className = "flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition cursor-pointer";
+            } else {
+                link.className = "flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer";
+            }
         }
     });
 
