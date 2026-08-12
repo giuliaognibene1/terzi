@@ -37,57 +37,60 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // --- FUNZIONE GEOLOCALIZZAZIONE IN TEMPO REALE CON LETTURA ORA ATTUALE E URL MAPS UFFICIALE ---
+    // --- LOGICA CORRETTA PER LOCALIZZAZIONE FLOTTA IN TEMPO REALE ---
     function calcolaPosizioneAttualeMezzo(idMezzo) {
-        const cantieri = window.leggiDatabase('cantieri');
-        const commesse = window.leggiDatabase('commesse');
+        const cantieri = window.leggiDatabase('cantieri') || [];
+        const commesse = window.leggiDatabase('commesse') || [];
 
         const oggi = new Date();
-        const oggiIso = `${oggi.getFullYear()}-${String(oggi.getMonth() + 1).padStart(2, '0')}-${String(oggi.getDate()).padStart(2, '0')}`;
+        const dataOdiernaIso = oggi.toISOString().split('T')[0];
 
-        // Calcolo orario attuale nel formato "HH:MM"
-        const oraAttualeStr = String(oggi.getHours()).padStart(2, '0') + ':' + String(oggi.getMinutes()).padStart(2, '0');
+        // Calcolo minuti assoluti per evitare problemi di stringhe "14:30" vs "07:30"
+        const minutiAttuali = (oggi.getHours() * 60) + oggi.getMinutes();
 
-        const cantieriOggi = cantieri.filter(c => c.idMezzo === idMezzo && c.data === oggiIso);
+        const cantieriOggi = cantieri.filter(c => String(c.idMezzo).trim() === String(idMezzo).trim() && c.data === dataOdiernaIso);
 
         if (cantieriOggi.length === 0) {
             return '<span class="text-xs font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded inline-block">IN SEDE</span>';
         }
 
-        // Ordiniamo cronologicamente i cantieri della giornata
-        cantieriOggi.sort((a, b) => a.oraInizio.localeCompare(b.oraInizio));
-
         let cantiereRiferimento = null;
 
-        // 1. Cerca un cantiere che si sta svolgendo ESATTAMENTE ADESSO
-        const cantiereInCorso = cantieriOggi.find(c => oraAttualeStr >= c.oraInizio && oraAttualeStr <= c.oraFine);
+        for (let cantiere of cantieriOggi) {
+            if (!cantiere.oraInizio || !cantiere.oraFine) continue;
 
-        if (cantiereInCorso) {
-            cantiereRiferimento = cantiereInCorso;
-        } else {
-            // 2. Se non è in un cantiere ora, cerca l'ultimo cantiere GIA' CONCLUSO prima di quest'ora
-            const cantieriPassati = cantieriOggi.filter(c => c.oraFine < oraAttualeStr);
-            if (cantieriPassati.length > 0) {
-                cantiereRiferimento = cantieriPassati[cantieriPassati.length - 1]; // Prende l'ultimo dell'elenco
+            const [startH, startM] = cantiere.oraInizio.split(':').map(Number);
+            const [endH, endM] = cantiere.oraFine.split(':').map(Number);
+
+            const minInizio = (startH * 60) + startM;
+            const minFine = (endH * 60) + endM;
+
+            // Il mezzo è nel cantiere SE l'ora attuale è compresa tra inizio e fine
+            // Manteniamo una tolleranza di 15 minuti prima (trasferimento) e 15 minuti dopo
+            if (minutiAttuali >= (minInizio - 15) && minutiAttuali <= (minFine + 15)) {
+                cantiereRiferimento = cantiere;
+                break;
             }
         }
 
-        // Se abbiamo trovato un cantiere (attuale o appena passato) estraiamo il GPS
+        // Se abbiamo trovato un cantiere attivo o in fase di trasferimento (tolleranza 15 min)
         if (cantiereRiferimento) {
-            const commessaAssociata = commesse.find(co => co.id === cantiereRiferimento.idCommessa);
+            const commessaAssociata = commesse.find(co => String(co.id).trim() === String(cantiereRiferimento.idCommessa).trim());
             if (commessaAssociata && commessaAssociata.gps && commessaAssociata.gps.trim() !== "") {
                 const gpsCoords = commessaAssociata.gps.trim();
-                // LINK GOOGLE MAPS UFFICIALE (Ricerca coordinate)
-                const urlMaps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(gpsCoords)}`;
-                return `<a href="${urlMaps}" target="_blank" class="text-xs font-mono font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-2 py-1 rounded inline-flex items-center space-x-1 cursor-pointer" title="Apri posizione in Google Maps">
-                            <i data-lucide="map-pin" class="w-3 h-3 inline text-blue-600 mr-1"></i><span>${gpsCoords}</span>
+                const urlMaps = `http://googleusercontent.com/maps.google.com/?q=${encodeURIComponent(gpsCoords)}`;
+                return `<a href="${urlMaps}" target="_blank" class="text-xs font-mono font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-2 py-1 rounded inline-flex items-center space-x-1 cursor-pointer transition shadow-sm" title="Mezzo in campo: apri mappa">
+                            <i data-lucide="map-pin" class="w-3 h-3 inline text-blue-600 mr-1"></i><span class="animate-pulse">${gpsCoords}</span>
                         </a>`;
+            } else {
+                 return `<span class="text-xs font-bold text-orange-700 bg-orange-50 border border-orange-200 px-2 py-1 rounded inline-block">IN CANTIERE (No GPS)</span>`;
             }
         }
 
-        // Se è mattina presto prima del primo cantiere, o se il cantiere non ha coordinate
+        // Se non rientra in nessuno slot (nemmeno con tolleranza), allora è in sede
         return '<span class="text-xs font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded inline-block">IN SEDE</span>';
     }
+    // --- FINE LOGICA LOCALIZZAZIONE ---
 
     window.aggiornaTabelleAnagrafiche = function() {
         const corpoClienti = document.getElementById('lista-clienti');
@@ -111,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (!item.nome.toLowerCase().includes(termMez) && !item.id.toLowerCase().includes(termMez)) return;
                 let badgeColore = item.stato === 'Disponibile' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800';
 
-                // Calcola la posizione
+                // Calcola la posizione Reale (In Sede o In Cantiere)
                 let tagPosizione = calcolaPosizioneAttualeMezzo(item.id);
 
                 corpoMezzi.innerHTML += `<tr class="hover:bg-gray-50">
