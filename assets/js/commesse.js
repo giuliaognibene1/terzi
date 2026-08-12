@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     <td class="p-4 font-mono text-xs text-gray-500 font-bold">
                         <span>${item.id}</span>
                         ${badgePreventivoHtml}
+                        ${item.idRichiesta ? `<span class="block mt-1 text-[9px] text-blue-500 font-bold uppercase tracking-wider"><i data-lucide="globe" class="w-3 h-3 inline"></i> Da Portale</span>` : ''}
                     </td>
                     <td class="p-4">
                         <p class="font-bold text-gray-900">${nomeCliente}</p>
@@ -102,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <span class="px-2.5 py-1 text-xs rounded-full ${coloreBadge}">${item.stato}</span>
                     </td>
                     <td class="p-4 text-center">
-                        <button type="button" onclick="rimuoviCommessaPerId('${idCommessaCorrente}')" class="text-red-500 hover:text-red-700"><i data-lucide="trash-2" class="w-4 h-4 inline"></i></button>
+                        <button type="button" onclick="rimuoviCommessaPerId('${idCommessaCorrente}')" class="text-red-500 hover:text-red-700" title="Elimina e/o Rilascia sul portale"><i data-lucide="trash-2" class="w-5 h-5 inline"></i></button>
                     </td>
                 </tr>`;
         });
@@ -176,15 +177,18 @@ document.addEventListener("DOMContentLoaded", function() {
         let db = window.leggiDatabase('commesse');
         const indice = document.getElementById('com-indice').value;
 
-        // Recupero idPreventivo per non perderlo se si salva la modifica!
+        // Recupero idPreventivo e idRichiesta per non perderli se si salva la modifica
         let idPrevEsistente = null;
+        let idRichiestaEsistente = null;
         if (indice !== "" && db[indice]) {
             idPrevEsistente = db[indice].idPreventivo;
+            idRichiestaEsistente = db[indice].idRichiesta;
         }
 
         const record = {
             id: document.getElementById('com-id').value || window.generaID('COM', db),
-            idPreventivo: idPrevEsistente, // Manteniamo il legame!
+            idPreventivo: idPrevEsistente,
+            idRichiesta: idRichiestaEsistente, // Manteniamo il legame con il portale!
             idCliente: document.getElementById('com-idcliente').value,
             lavorazione: document.getElementById('com-lavorazione').value,
             ettari: document.getElementById('com-ettari').value,
@@ -203,13 +207,37 @@ document.addEventListener("DOMContentLoaded", function() {
         window.aggiornaTabellaCommesse();
     });
 
+    // ELIMINAZIONE INTELLIGENTE COMMESSA + PULIZIA AUTOMATICA PIANIFICAZIONE (CANTIERI)
     window.rimuoviCommessaPerId = function(idCommessa) {
-        if (confirm("Eliminare definitivamente questa commessa?")) {
+        if (confirm("Sei sicuro di voler eliminare questa commessa? Se è già stata pianificata, verrà rimossa anche dal calendario.")) {
+
             let db = window.leggiDatabase('commesse');
             const indice = db.findIndex(c => c.id === idCommessa);
+
             if (indice !== -1) {
+                const commessaDaEliminare = db[indice];
+
+                // 1. Se la commessa proviene dal portale, ripristiniamo la richiesta per l'agricoltore
+                if (commessaDaEliminare.idRichiesta) {
+                    let tutteLeRichieste = JSON.parse(localStorage.getItem('databaseRichiesteLavoro')) || [];
+                    let indiceRichiesta = tutteLeRichieste.findIndex(r => r.id == commessaDaEliminare.idRichiesta);
+
+                    if (indiceRichiesta !== -1) {
+                        tutteLeRichieste[indiceRichiesta].stato = "IN ATTESA";
+                        localStorage.setItem('databaseRichiesteLavoro', JSON.stringify(tutteLeRichieste));
+                    }
+                }
+
+                // 2. PULIZIA PIANIFICAZIONE: Rimuoviamo i cantieri/eventi a calendario collegati a questa commessa
+                let cantieriDb = window.leggiDatabase('cantieri') || [];
+                let cantieriAggiornati = cantieriDb.filter(c => c.idCommessa != idCommessa);
+                window.salvaDatabase('cantieri', cantieriAggiornati);
+
+                // 3. Eliminiamo la commessa dal database commesse
                 db.splice(indice, 1);
                 window.salvaDatabase('commesse', db);
+
+                alert("Commessa e relativa pianificazione cancellate con successo.");
                 window.aggiornaTabellaCommesse();
             }
         }
@@ -233,6 +261,6 @@ document.addEventListener("DOMContentLoaded", function() {
             if (typeof window.avviaModificaCommessaPerId === 'function') {
                 window.avviaModificaCommessaPerId(idDaAprire);
             }
-        }, 150); // Piccolo ritardo per assicurare che tutto sia caricato
+        }, 150);
     }
 });
