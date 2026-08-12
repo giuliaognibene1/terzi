@@ -12,7 +12,7 @@
 
     <div id="sidebar-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-40 hidden md:hidden"></div>
 
-    <aside id="sidebar" class="w-64 bg-sidebar text-gray-300 flex flex-col justify-between p-4 flex-shrink-0 z-50 shadow-2xl fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:shadow-lg md:z-20">
+    <aside id="sidebar" class="w-64 bg-[#0f2a1d] text-gray-300 flex flex-col justify-between p-4 flex-shrink-0 z-50 shadow-2xl fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:shadow-lg md:z-20">
         <div>
             <div class="flex items-center space-x-3 pb-6 mb-6 border-b border-emerald-900">
                 <div class="bg-orange-500 text-white p-2 rounded">
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <nav class="space-y-1">
-                <a href="index.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span>Dashboard</span></a>
+                <a href="index.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-emerald-950 text-white transition cursor-pointer"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span>Dashboard</span></a>
                 <a href="anagrafiche.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="folder-open" class="w-5 h-5"></i><span>Anagrafica</span></a>
                 <a href="richieste.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="globe" class="w-5 h-5"></i><span>Richieste Portale</span></a>
                 <a href="commesse.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-emerald-950 hover:text-white text-gray-400 transition cursor-pointer"><i data-lucide="clipboard-list" class="w-5 h-5"></i><span>Commesse</span></a>
@@ -58,8 +58,8 @@
                 </button>
 
                 <div>
-                    <h2 class="text-xl md:text-2xl font-black text-gray-900">Storico e Consuntivi</h2>
-                    <p class="text-xs md:text-sm text-gray-500 mt-1">Verifica le ore reali dei cantieri passati e chiudi i lavori.</p>
+                    <h2 class="text-xl md:text-2xl font-black text-gray-900">Dashboard Operativa</h2>
+                    <p class="text-xs md:text-sm text-gray-500 mt-1">Stato generale e andamento delle attività dell'azienda agromeccanica.</p>
                 </div>
             </div>
 
@@ -68,60 +68,64 @@
                 <input type="text" id="cerca-storico" placeholder="Ricerca libera..." class="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm outline-none focus:border-emerald-600 shadow-sm">
             </div>
         </div>
-        <div class="mb-8">
-            <h3 class="text-lg font-bold text-gray-800 mb-4 border-b border-gray-200 pb-2">Stato Operativo del Business</h3>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div id="card-richieste-portale" onclick="window.location.href='richieste.html'" class="bg-white border border-blue-200 rounded-xl p-5 flex items-center shadow-sm cursor-pointer hover:bg-blue-50 transition group">
-                    <div class="p-3 bg-blue-100 text-blue-600 rounded-lg mr-4 group-hover:scale-110 transition-transform">
-                        <i data-lucide="globe" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <p id="count-richieste-portale" class="text-2xl font-black text-blue-700">0</p>
-                        <p class="text-[10px] text-gray-600 uppercase tracking-wider font-bold mt-0.5">Richieste Nuove dal Portale</p>
-                    </div>
-                </div>
+        <div class="p-4 md:p-6 space-y-6 w-full max-w-full">
 
-                <div onclick="window.location.href='commesse.html'" class="bg-white border border-orange-200 rounded-xl p-5 flex items-center shadow-sm cursor-pointer hover:bg-orange-50 transition group">
-                    <div class="p-3 bg-orange-100 text-orange-600 rounded-lg mr-4 group-hover:scale-110 transition-transform">
-                        <i data-lucide="inbox" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <p id="count-da-pianificare" class="text-2xl font-black text-orange-700">0</p>
-                        <p class="text-[10px] text-gray-600 uppercase tracking-wider font-bold mt-0.5">Commesse da Pianificare</p>
-                    </div>
-                </div>
+            <div>
+                <h3 class="text-md font-black text-gray-400 uppercase tracking-wider mb-3 border-b border-gray-200 pb-1 text-[11px]">Stato Operativo del Business</h3>
 
-                <div onclick="window.location.href='pianificazione.html'" class="bg-white border border-emerald-200 rounded-xl p-5 flex items-center shadow-sm cursor-pointer hover:bg-emerald-50 transition group">
-                    <div class="p-3 bg-emerald-100 text-emerald-600 rounded-lg mr-4 group-hover:scale-110 transition-transform">
-                        <i data-lucide="tractor" class="w-6 h-6"></i>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div id="card-richieste-portale" onclick="window.location.href='richieste.html'" class="bg-white border border-blue-200 rounded-xl p-5 flex items-center shadow-sm cursor-pointer hover:bg-blue-50 transition group">
+                        <div class="p-3 bg-blue-100 text-blue-600 rounded-lg mr-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="globe" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p id="count-richieste-portale" class="text-2xl font-black text-blue-700 leading-none">0</p>
+                            <p class="text-[10px] text-gray-600 uppercase tracking-wider font-bold mt-1.5">Richieste Nuove dal Portale</p>
+                        </div>
                     </div>
-                    <div>
-                        <p id="count-cantieri-oggi" class="text-2xl font-black text-emerald-700">0</p>
-                        <p class="text-[10px] text-gray-600 uppercase tracking-wider font-bold mt-0.5">Cantieri Attivi Oggi</p>
+
+                    <div onclick="window.location.href='commesse.html'" class="bg-white border border-orange-200 rounded-xl p-5 flex items-center shadow-sm cursor-pointer hover:bg-orange-50 transition group">
+                        <div class="p-3 bg-orange-100 text-orange-600 rounded-lg mr-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="inbox" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p id="count-da-pianificare" class="text-2xl font-black text-orange-700 leading-none">0</p>
+                            <p class="text-[10px] text-gray-600 uppercase tracking-wider font-bold mt-1.5">Commesse da Pianificare</p>
+                        </div>
+                    </div>
+
+                    <div onclick="window.location.href='pianificazione.html'" class="bg-white border border-emerald-200 rounded-xl p-5 flex items-center shadow-sm cursor-pointer hover:bg-emerald-50 transition group">
+                        <div class="p-3 bg-emerald-100 text-emerald-600 rounded-lg mr-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="tractor" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p id="count-cantieri-oggi" class="text-2xl font-black text-emerald-700 leading-none">0</p>
+                            <p class="text-[10px] text-gray-600 uppercase tracking-wider font-bold mt-1.5">Cantieri Attivi Oggi</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="mb-8">
-            <h3 class="text-lg font-bold text-gray-800 mb-4 border-b border-gray-200 pb-2 flex items-center">
-                <i data-lucide="calendar-clock" class="w-5 h-5 mr-2 text-emerald-700"></i> Agenda Operativa (Prossimi 3 Giorni)
-            </h3>
-            <div id="agenda-container" class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden"></div>
-        </div>
-
-        <div class="min-h-[120px]">
-            <h3 class="text-lg font-bold text-gray-800 mb-4 border-b border-gray-200 pb-2 text-red-800">Allarmi Flotta e Personale</h3>
-            <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
-                <div id="card-tagliandi" class="nascosto bg-white border border-orange-200 rounded-lg p-3 flex items-center shadow-sm cursor-pointer hover:bg-orange-50 transition"><div class="p-2 bg-orange-100 text-orange-700 rounded-md mr-3"><i data-lucide="wrench" class="w-5 h-5"></i></div><div><p id="count-tagliandi" class="text-xl font-black text-orange-700 leading-none">0</p><p class="text-[10px] text-gray-600 uppercase font-bold mt-1 leading-tight">Tagliandi<br>Mezzi</p></div></div>
-                <div id="card-assicurazioni" class="nascosto bg-white border border-red-200 rounded-lg p-3 flex items-center shadow-sm cursor-pointer hover:bg-red-50 transition"><div class="p-2 bg-red-100 text-red-700 rounded-md mr-3"><i data-lucide="shield-alert" class="w-5 h-5"></i></div><div><p id="count-assicurazioni" class="text-xl font-black text-red-700 leading-none">0</p><p class="text-[10px] text-gray-600 uppercase font-bold mt-1 leading-tight">Assicurazioni<br>Mezzi</p></div></div>
-                <div id="card-visite" class="nascosto bg-white border border-blue-200 rounded-lg p-3 flex items-center shadow-sm cursor-pointer hover:bg-blue-50 transition"><div class="p-2 bg-blue-100 text-blue-700 rounded-md mr-3"><i data-lucide="stethoscope" class="w-5 h-5"></i></div><div><p id="count-visite" class="text-xl font-black text-blue-700 leading-none">0</p><p class="text-[10px] text-gray-600 uppercase font-bold mt-1 leading-tight">Visite Med.<br>Operatori</p></div></div>
-                <div id="card-attestati" class="nascosto bg-white border border-yellow-200 rounded-lg p-3 flex items-center shadow-sm cursor-pointer hover:bg-yellow-50 transition"><div class="p-2 bg-yellow-100 text-yellow-700 rounded-md mr-3"><i data-lucide="hard-hat" class="w-5 h-5"></i></div><div><p id="count-attestati" class="text-xl font-black text-yellow-700 leading-none">0</p><p class="text-[10px] text-gray-600 uppercase font-bold mt-1 leading-tight">Attestati<br>Sicurezza</p></div></div>
-                <div id="card-patentini" class="nascosto bg-white border border-purple-200 rounded-lg p-3 flex items-center shadow-sm cursor-pointer hover:bg-purple-50 transition"><div class="p-2 bg-purple-100 text-purple-700 rounded-md mr-3"><i data-lucide="award" class="w-5 h-5"></i></div><div><p id="count-patentini" class="text-xl font-black text-purple-700 leading-none">0</p><p class="text-[10px] text-gray-600 uppercase font-bold mt-1 leading-tight">Patentini<br>Lavoro</p></div></div>
+            <div>
+                <h3 class="text-md font-black text-gray-400 uppercase tracking-wider mb-3 border-b border-gray-200 pb-1 text-[11px] flex items-center">
+                    <i data-lucide="calendar-clock" class="w-4 h-4 mr-1.5 text-emerald-700"></i> Agenda Operativa (Prossimi 3 Giorni)
+                </h3>
+                <div id="agenda-container" class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden"></div>
             </div>
-        </div>
 
+            <div class="min-h-[120px]">
+                <h3 class="text-md font-black text-red-800 uppercase tracking-wider mb-3 border-b border-red-100 pb-1 text-[11px]">Allarmi Flotta e Personale</h3>
+                <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
+                    <div id="card-tagliandi" class="nascosto bg-white border border-orange-200 rounded-lg p-3 flex items-center shadow-sm cursor-pointer hover:bg-orange-50 transition"><div class="p-2 bg-orange-100 text-orange-700 rounded-md mr-3"><i data-lucide="wrench" class="w-5 h-5"></i></div><div><p id="count-tagliandi" class="text-xl font-black text-orange-700 leading-none">0</p><p class="text-[10px] text-gray-600 uppercase font-bold mt-1 leading-tight">Tagliandi<br>Mezzi</p></div></div>
+                    <div id="card-assicurazioni" class="nascosto bg-white border border-red-200 rounded-lg p-3 flex items-center shadow-sm cursor-pointer hover:bg-red-50 transition"><div class="p-2 bg-red-100 text-red-700 rounded-md mr-3"><i data-lucide="shield-alert" class="w-5 h-5"></i></div><div><p id="count-assicurazioni" class="text-xl font-black text-red-700 leading-none">0</p><p class="text-[10px] text-gray-600 uppercase font-bold mt-1 leading-tight">Assicurazioni<br>Mezzi</p></div></div>
+                    <div id="card-visite" class="nascosto bg-white border border-blue-200 rounded-lg p-3 flex items-center shadow-sm cursor-pointer hover:bg-blue-50 transition"><div class="p-2 bg-blue-100 text-blue-700 rounded-md mr-3"><i data-lucide="stethoscope" class="w-5 h-5"></i></div><div><p id="count-visite" class="text-xl font-black text-blue-700 leading-none">0</p><p class="text-[10px] text-gray-600 uppercase font-bold mt-1 leading-tight">Visite Med.<br>Operatori</p></div></div>
+                    <div id="card-attestati" class="nascosto bg-white border border-yellow-200 rounded-lg p-3 flex items-center shadow-sm cursor-pointer hover:bg-yellow-50 transition"><div class="p-2 bg-yellow-100 text-yellow-700 rounded-md mr-3"><i data-lucide="hard-hat" class="w-5 h-5"></i></div><div><p id="count-attestati" class="text-xl font-black text-yellow-700 leading-none">0</p><p class="text-[10px] text-gray-600 uppercase font-bold mt-1 leading-tight">Attestati<br>Sicurezza</p></div></div>
+                    <div id="card-patentini" class="nascosto bg-white border border-purple-200 rounded-lg p-3 flex items-center shadow-sm cursor-pointer hover:bg-purple-50 transition"><div class="p-2 bg-purple-100 text-purple-700 rounded-md mr-3"><i data-lucide="award" class="w-5 h-5"></i></div><div><p id="count-patentini" class="text-xl font-black text-purple-700 leading-none">0</p><p class="text-[10px] text-gray-600 uppercase font-bold mt-1 leading-tight">Patentini<br>Lavoro</p></div></div>
+                </div>
+            </div>
+
+        </div>
     </main>
 
     <script>
@@ -137,18 +141,22 @@
     <script src="assets/js/config.js"></script>
     <script src="assets/js/dashboard.js"></script>
     <script>
-            // GESTIONE MENU MOBILE A SCOMPARSA
-            const btnMenu = document.getElementById('btn-menu');
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-    
-            function toggleMenu() {
-                sidebar.classList.toggle('-translate-x-full');
-                overlay.classList.toggle('hidden');
-            }
-    
-            if (btnMenu) btnMenu.addEventListener('click', toggleMenu);
-            if (overlay) overlay.addEventListener('click', toggleMenu);
-        </script>
+        const btnMenu = document.getElementById('btn-menu');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+
+        function toggleMenu() {
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        if (btnMenu) btnMenu.addEventListener('click', toggleMenu);
+        if (overlay) overlay.addEventListener('click', toggleMenu);
+
+        // Forza scansione iniziale icone dinamiche o statiche residuali
+        setTimeout(() => {
+            if(typeof lucide !== 'undefined') lucide.createIcons();
+        }, 150);
+    </script>
 </body>
 </html>
