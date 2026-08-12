@@ -136,4 +136,61 @@
         }
     </script>
 </body>
+</html>                                <span class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-gray-400"><i data-lucide="fuel" class="w-4 h-4"></i></span>
+                                <input type="number" step="1" id="chiudi-litri" placeholder="Es. 120" class="w-full pl-8 pr-2 py-2 border border-gray-300 rounded-lg bg-white text-sm outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-100 font-bold">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-600 uppercase mb-1">Lettura Contaore</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-gray-400"><i data-lucide="hash" class="w-4 h-4"></i></span>
+                                <input type="number" step="1" id="chiudi-contaore" placeholder="Es. 4500" class="w-full pl-8 pr-2 py-2 border border-gray-300 rounded-lg bg-white text-sm outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-100 font-bold">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-600 uppercase mb-1">Km Percorsi (solo furgoni/camion)</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-gray-400"><i data-lucide="map" class="w-4 h-4"></i></span>
+                            <input type="number" step="1" id="chiudi-km" placeholder="Es. 45" class="w-full pl-8 pr-2 py-2 border border-gray-300 rounded-lg bg-white text-sm outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-100 font-bold">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Note Operative / Problemi</label>
+                    <textarea id="chiudi-note" rows="3" placeholder="Scrivi note particolari o problemi riscontrati sul campo..." class="w-full px-3 py-3 border border-gray-300 rounded-xl bg-gray-50 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-100"></textarea>
+                </div>
+
+                <div class="pt-2">
+                    <button type="button" id="btn-salva-chiusura" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-black py-4 rounded-xl text-base shadow-lg active:scale-95 transition flex justify-center items-center space-x-2 cursor-pointer">
+                        <i data-lucide="check-circle" class="w-5 h-5"></i>
+                        <span>Invia e Chiudi Cantiere</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="fixed bottom-0 w-full bg-white border-t border-gray-200 flex justify-around pb-safe z-40 max-w-md left-1/2 transform -translate-x-1/2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <div class="flex-1 py-3 flex flex-col items-center text-emerald-700 font-bold">
+            <i data-lucide="list-todo" class="w-6 h-6 mb-1"></i>
+            <span class="text-[10px] uppercase tracking-wider">Miei Turni</span>
+        </div>
+        <button id="btn-logout" class="flex-1 py-3 flex flex-col items-center text-gray-400 hover:text-red-600 active:text-red-600 transition cursor-pointer">
+            <i data-lucide="log-out" class="w-6 h-6 mb-1"></i>
+            <span class="text-[10px] uppercase tracking-wider">Esci</span>
+        </button>
+    </nav>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="assets/js/operatore.js"></script>
+    <script>
+        // Inizializzazione icone fisse all'apertura
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    </script>
+</body>
 </html>
